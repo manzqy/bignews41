@@ -36,8 +36,69 @@
         <input type="submit" class="input_sub" value="登 录" />
       </form>
     </div>
+
   </div>
-
+  
+  <!-- Modal -->
+  <div class="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">提示</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <div class="modal-body">
+          <div class="container-fluid msg">
+            Add rows here
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-info" data-dismiss="modal">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
-
+<script>
+  $(function() {
+    let baseUrl = 'http://localhost:8080/api/v1';
+    let status = false;
+    $(".input_sub").on("click", function(e) {
+      e.preventDefault();
+      let phone = $(".input_txt").val().trim();
+      let password = $(".input_pass").val().trim();
+      if (!(phone && password)) {
+        $(".msg").text('密码、用户名不能为空');
+        $("#modelId").modal();
+        return;
+      }
+      $.ajax({
+        url: baseUrl + '/admin/user/login',
+        type: 'post',
+        data: {
+          username: phone,
+          password: password
+        },
+        dataType: 'json',
+        success: function(res) {
+          $(".msg").text(res.msg);
+          $("#modelId").modal();
+          if (res.code == 200) {
+            status = true;
+          }
+        }
+      })
+    });
+    $("#modelId").on("hidden.bs.modal", function() {
+      console.log(111);
+      if (!status) {
+        $("#modelId").modal('hide');
+        return;
+      }
+      location.href = './index.html';
+    })
+  })
+</script>
 </html>
