@@ -1,55 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>文章列表</title>
-    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/reset.css">
-    <link rel="stylesheet" href="css/iconfont.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/iconfont.css" />
+    <link rel="stylesheet" href="css/main.css" />
     <script src="./libs/jquery-1.12.4.min.js"></script>
     <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
     <!-- 引入模板引擎js文件 -->
     <script src="./libs/template-web.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container-fluid">
-        <div class="common_title">
-            文章类别管理
-        </div>
-        <div class="container-fluid common_con">
-            <table class="table table-striped table-bordered table-hover mp20 category_table">
-                <thead>
-                    <tr>
-                        <th>名称</th>
-                        <th>Slug</th>
-                        <th class="text-center" width="100">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
+      <div class="common_title">
+        文章类别管理
+      </div>
+      <div class="container-fluid common_con">
+        <table
+          class="table table-striped table-bordered table-hover mp20 category_table"
+        >
+          <thead>
+            <tr>
+              <th>名称</th>
+              <th>Slug</th>
+              <th class="text-center" width="100">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <tr>
                         <td>奇趣事</td>
                         <td>funny</td>
                         <td class="text-center">
                             <a href="javascript:void(0)" data-toggle="modal" class=" btn btn-info btn-xs">编辑</a>
                             <a href="javascript:void(0)" class="btn btn-danger btn-xs">删除</a>
                         </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3" class="text-center">
-                            <a href="javascript:void(0)" class="btn btn-success" id="xinzengfenlei" data-toggle="modal"
-                                data-target="#myModal">新增分类</a>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+                    </tr> -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3" class="text-center">
+                <a
+                  href="javascript:void(0)"
+                  class="btn btn-success"
+                  id="xinzengfenlei"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                  >新增分类</a
+                >
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
+    <!-- 模板引擎 -->
+    <script type="text/template" id="template">
+      <% for(var i = 0;i < $data.length;i++) { %>
+          <tr>
+              <td><%= $data[i].name %></td>
+              <td><%= $data[i].slug %></td>
+              <td class="text-center">
+                  <a href="javascript:void(0)" data-toggle="modal" class=" btn btn-info btn-xs" data-id="<%= $data[i].id %>" data-toggle="modal" data-target="#exampleModal">编辑</a>
+                  <a href="javascript:void(0)" class="btn btn-danger btn-xs btnDel" data-id="<%= $data[i].id %>">删除</a>
+              </td>
+          </tr>
+      <% } %>
+    </script>
+    <!-- 模态框 -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <input type="hidden" name="id" id="oid" />
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="form-group">
+                <label for="recipient-name" class="col-form-label">名称:</label>
+                <input type="text" class="form-control" id="recipient-name" />
+              </div>
+              <div class="form-group">
+                <label for="message-text" class="col-form-label">Slug:</label>
+                <textarea class="form-control" id="message-text"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary btn-cancel"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary btn-sure">
+              Send message
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 删除模态框 -->
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modelId"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modelTitleId"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">提示：</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            你确定要删除吗？
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary del-sure">Sure</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="../js/http.js"></script>
+  <script>
+    $(() => {
+      // 切换模式
+      let status = true;
+      let delId = 0;
+      articleInit();
+      function articleInit() {
+        $.get({
+          url: newsUrl.allArticle,
+          success: function(res) {
+            let arr = res.data;
+            arr = arr.sort((a, b) => b.id - a.id);
+            let html = template("template", arr);
+            $("tbody").html(html);
+          }
+        });
+      }
+      $("#exampleModal").on("show.bs.modal", function(e) {
+        // do something...
+        let id = e.relatedTarget.dataset.id;
+        if ($(e.relatedTarget).hasClass("btn-xs")) {
+          $.get({
+            url: newsUrl.searchArticle,
+            data: {
+              id: id
+            },
+            success: function(res) {
+              $("#exampleModalLabel").text("编辑内容");
+              $("#oid").val(id);
+              $("#recipient-name").val(res.data[0].name);
+              $("#message-text").val(res.data[0].slug);
+              $(".btn-sure")
+                .addClass("btn-primary")
+                .removeClass("btn-success");
+              status = true;
+            }
+          });
+        } else {
+          $("#oid").val(id);
+          $("form")[0].reset();
+          $("#exampleModalLabel").text("新增内容");
+          $(".btn-sure")
+            .addClass("btn-success")
+            .removeClass("btn-primary");
+          status = false;
+        }
+      });
+      $(".btn-cancel").on("click", function() {
+        $("form")[0].reset();
+      });
+      $(".btn-sure").on("click", function() {
+        if (status) {
+          let id = $("#oid").val();
+          let name = $("#recipient-name")
+            .val()
+            .trim();
+          let slug = $("#message-text")
+            .val()
+            .trim();
+          $.post({
+            url: newsUrl.editArticle,
+            data: {
+              id: id,
+              name: name,
+              slug: slug
+            },
+            success: function(res) {
+              if (res.code == 200) {
+                articleInit();
+              }
+            }
+          });
+        } else {
+          let name = $("#recipient-name")
+            .val()
+            .trim();
+          let slug = $("#message-text")
+            .val()
+            .trim();
+          $.post({
+            url: newsUrl.addArticle,
+            data: {
+              name: name,
+              slug: slug
+            },
+            success: function(res) {
+              if (res.code == 201) {
+                articleInit();
+              }
+            }
+          });
+        }
 
+        $("#exampleModal").modal("hide");
+      });
+      $("tbody").on("click", ".btnDel", function() {
+        delId = $(this).attr("data-id");
+        $("#modelId").modal();
+      });
+      $(".del-sure").on("click", function() {
+        $.post({
+          url: newsUrl.delteArticle,
+          data: {
+            id: delId
+          },
+          success: function(res) {
+            if (res.code == 204) {
+              $("#modelId").modal("hide");
+              articleInit();
+            }
+          }
+        });
+      });
+    });
+  </script>
 </html>
