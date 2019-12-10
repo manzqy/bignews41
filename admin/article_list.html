@@ -1,61 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>文章列表</title>
-    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="./css/iconfont.css">
-    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/iconfont.css" />
+    <link rel="stylesheet" href="./css/main.css" />
     <script src="./libs/jquery-1.12.4.min.js"></script>
+    <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
     <!-- 引入模板引擎js文件 -->
     <script src="./libs/template-web.js"></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="container-fluid">
-        <div class="common_title">
-            文章列表
-        </div>
-        <div class="container-fluid common_con">
-            <div class="row opt_btns">
-                <div class="col-xs-6">
-                    <form class="form-inline">
-                        <select id="selCategory" name="" class="form-control input-sm">
-                            <option value="">所有分类</option>
+      <div class="common_title">
+        文章列表
+      </div>
+      <div class="container-fluid common_con">
+        <div class="row opt_btns">
+          <div class="col-xs-6">
+            <form class="form-inline">
+              <select id="selCategory" name="" class="form-control input-sm">
+                <!-- <option value="">所有分类</option>
                             <option>未分类</option>
                             <option>奇趣事</option>
                             <option>会生活</option>
-                            <option>爱旅行</option>
-                        </select>
-                        <select id="selStatus" name="" class="form-control input-sm">
-                            <option value="">所有状态</option>
-                            <option value="草稿">草稿</option>
-                            <option value="已发布">已发布</option>
-                        </select>
-                        <button id="btnSearch" class="btn btn-default btn-sm">筛选</button>
-                    </form>
-                </div>
-                <div class="col-xs-6">
-                    <a href="article_release.html" class="btn btn-success btn-sm pull-right" id="release_btn">发表文章</a>
-                </div>
-            </div>
-            <table class="table table-striped table-bordered table-hover mp20">
-                <thead>
-                    <tr>
-                        <th>标题</th>
-                        <th>作者</th>
-                        <th>分类</th>
-                        <th class="text-center">发表时间</th>
-                        <th class="text-center">状态</th>
-                        <th class="text-center" width="100">操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
+                            <option>爱旅行</option> -->
+              </select>
+              <select id="selStatus" name="" class="form-control input-sm">
+                <option value="">所有状态</option>
+                <option value="草稿">草稿</option>
+                <option value="已发布">已发布</option>
+              </select>
+              <button id="btnSearch" class="btn btn-default btn-sm">
+                筛选
+              </button>
+            </form>
+          </div>
+          <div class="col-xs-6">
+            <a
+              href="article_release.html"
+              class="btn btn-success btn-sm pull-right"
+              id="release_btn"
+              >发表文章</a
+            >
+          </div>
+        </div>
+        <table class="table table-striped table-bordered table-hover mp20">
+          <thead>
+            <tr>
+              <th>标题</th>
+              <th>作者</th>
+              <th>分类</th>
+              <th class="text-center">发表时间</th>
+              <th class="text-center">状态</th>
+              <th class="text-center" width="100">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- <tr>
                         <td>王积千造统最头</td>
                         <td>杰克</td>
                         <td>奇趣事</td>
@@ -65,13 +72,249 @@
                             <a href="article_edit.html" class="btn btn-default btn-xs">编辑</a>
                             <a href="javascript:void(0);" class="btn btn-danger btn-xs delete">删除</a>
                         </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="row text-center">
-            </div>
+                    </tr> -->
+          </tbody>
+        </table>
+        <p class="text-center kl">还没有内容哦</p>
+        <div class="row text-center">
+          <ul id="pagination-demo" class="pagination-sm"></ul>
         </div>
+      </div>
     </div>
-</body>
+    <script type="text/template" id="tempSort">
+      <option value="">所有分类</option>
+      <% for(var i = 0;i < $data.length;i++) { %>
+      <option value="<%= $data[i].id %>"><%= $data[i].name %></option>
+      <% } %>
+    </script>
+    <!-- 内容模板 -->
+    <script type="text/template" id="tempContent">
+      {{ each $data v i }}
+      <tr>
+          <td>{{ v.title }}</td>
+          <td>{{ v.author }}</td>
+          <td>{{ v.category }}</td>
+          <td class="text-center">{{ v.date }} 07:08:46</td>
+          <td class="text-center">{{ v.state }}</td>
+          <td class="text-center">
+              <a href="article_edit.html?id={{ v.id }}" class="btn btn-default btn-xs">编辑</a>
+              <a href="javascript:void(0);" class="btn btn-danger btn-xs delete" data-id="{{ v.id }}">删除</a>
+          </td>
+      </tr>
+      {{ /each }}
+    </script>
+    <!-- 模态框 -->
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modelId"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modelTitleId"
+      aria-hidden="true"
+    >
+      <input type="hidden" name="id" id="del-id" />
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">提示</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            你确定要删除吗？
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+            <button type="button" class="btn btn-primary btn-sure">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="../js/http.js"></script>
+  <script src="./libs/jquery.twbsPagination.js"></script>
+  <script>
+    $(() => {
+      $.get({
+        url: newsUrl.allArticle,
+        success: function(res) {
+          let str = template("tempSort", res.data);
+          $("#selCategory").html(str);
+        }
+      });
+      // 封装一下函数
+      getData.num = 0;
+      function getData(fn, options = {}) {
+        options.type = options.type || $("#selCategory").val();
+        options.state = options.state || $("#selStatus").val();
+        options.page = options.page || 1;
+        options.perpage = options.perpage || 3;
+        getData.allNum = options.perpage;
+        $.get({
+          url: newsUrl.queryArticle,
+          data: {
+            type: options.type,
+            state: options.state,
+            page: options.page,
+            perpage: options.perpage
+          },
+          success: function(res) {
+            if (res.code == 200) {
+              if (res.data.totalPage) {
+                let str = template("tempContent", res.data.data);
+                $("tbody").html(str);
+                $(".kl").hide();
+                $("#pagination-demo").show();
 
+                fn && fn(res.data);
+              } else {
+                $("#pagination-demo").hide();
+                $("tbody").html("");
+                $(".kl").show();
+                pages(1);
+              }
+            }
+          }
+        });
+      }
+      function pages(totalPages, foo, visiblePages) {
+        getData.totalPages = totalPages;
+        $("#pagination-demo").twbsPagination({
+          totalPages: totalPages,
+          visiblePages: visiblePages || 7,
+          startPage: 1,
+          first: "首页",
+          prev: "上一页",
+          next: "下一页",
+          last: "尾页",
+          onPageClick: function(event, page) {
+            getData.page = page;
+            foo && foo(page);
+          }
+        });
+      }
+      getData(function(arr) {
+        pages(arr.totalPage, function(page) {
+          getData(null, { page: page });
+        });
+      });
+      $("#btnSearch").on("click", function(e) {
+        e.preventDefault();
+        getData(function(arr) {
+          $("#pagination-demo").twbsPagination(
+            "changeTotalPages",
+            arr.totalPage,
+            1
+          );
+          pages(arr.totalPage, function(page) {
+            getData(null, { page: page });
+          });
+        });
+      });
+      // 删除提示
+      $("tbody").on("click", ".delete", function() {
+        let id = $(this).attr("data-id");
+        $("#del-id").val(id);
+        $("#modelId").modal();
+      });
+      // 删除内容
+      $(".btn-sure").on("click", function(e) {
+        e.preventDefault();
+        let id = $("#del-id").val();
+        $.post({
+          url: newsUrl.delArticle,
+          data: {
+            id: id
+          },
+          success: function(res) {
+            if (res.code == 204) {
+              $("#modelId").modal("hide");
+
+              if ($("tbody").children().length == 1) {
+                if (getData.page == getData.totalPages) getData.page--;
+                getData(
+                  function(arr) {
+                    $("#pagination-demo").twbsPagination(
+                      "changeTotalPages",
+                      getData.page,
+                      getData.page
+                    );
+                    pages(
+                      arr.totalPage,
+                      function(page) {
+                        getData(null, { page: page });
+                      },
+                      getData.page
+                    );
+                  },
+                  { page: getData.page }
+                );
+                getData.num = 0;
+                return;
+              }
+              getData.num++;
+              if (getData.num == getData.allNum) {
+                $("#pagination-demo").twbsPagination(
+                  "changeTotalPages",
+                  --getData.totalPages,
+                  getData.page
+                );
+                getData.num = 0;
+              }
+              console.log(getData.num);
+              getData(
+                function(arr) {
+                  pages(arr.totalPage, null, getData.page);
+                },
+                { page: getData.page }
+              );
+            }
+          }
+        });
+      });
+
+      /*    $.get({
+            url: newsUrl.queryArticle,
+            data: {
+                type: type,
+                state: state,
+                page: page,
+                perpage: perpage
+            },
+            success: function(res) {
+                if (res.code == 200) {
+                    let str = template("tempContent", res.data.data);
+                    console.log(str);
+                    $("tbody").html(str);
+
+                    $('#pagination-demo').twbsPagination({
+                        totalPages: res.data.totalPage,
+                        visiblePages: 7,
+                        startPage: 2,
+                        first: '首页',
+                        prev: '上一页',
+                        next: '下一页',
+                        last: '尾页',
+                        onPageClick: function (event, page) {
+                            $('#page-content').text('Page ' + page);
+                        }
+                    });
+                }
+            }
+        }) */
+    });
+  </script>
 </html>

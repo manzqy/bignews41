@@ -10,5 +10,7 @@
     newsUrl.editArticle = baseUrl + '/admin/category/edit'; // 编辑文章类别
     newsUrl.addArticle = baseUrl + '/admin/category/add'; // 新增文章类别
     newsUrl.delteArticle = baseUrl + '/admin/category/delete'; // 删除文章类别
+    newsUrl.queryArticle = baseUrl + '/admin/article/query'; // 文章搜索
+    newsUrl.delArticle = baseUrl + '/admin/article/delete'; // 删除文章
     w.newsUrl = newsUrl;
 })(window);
