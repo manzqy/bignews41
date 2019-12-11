@@ -156,13 +156,11 @@
         }
       });
       // 封装一下函数
-      getData.num = 0;
       function getData(fn, options = {}) {
         options.type = options.type || $("#selCategory").val();
         options.state = options.state || $("#selStatus").val();
         options.page = options.page || 1;
         options.perpage = options.perpage || 3;
-        getData.allNum = options.perpage;
         $.get({
           url: newsUrl.queryArticle,
           data: {
@@ -178,23 +176,21 @@
                 $("tbody").html(str);
                 $(".kl").hide();
                 $("#pagination-demo").show();
-
                 fn && fn(res.data);
               } else {
                 $("#pagination-demo").hide();
                 $("tbody").html("");
                 $(".kl").show();
-                pages(1);
               }
             }
           }
         });
       }
-      function pages(totalPages, foo, visiblePages) {
+      function pages(totalPages, foo) {
         getData.totalPages = totalPages;
         $("#pagination-demo").twbsPagination({
           totalPages: totalPages,
-          visiblePages: visiblePages || 7,
+          visiblePages: 7,
           startPage: 1,
           first: "首页",
           prev: "上一页",
@@ -242,7 +238,6 @@
           success: function(res) {
             if (res.code == 204) {
               $("#modelId").modal("hide");
-
               if ($("tbody").children().length == 1) {
                 if (getData.page == getData.totalPages) getData.page--;
                 getData(
@@ -265,19 +260,14 @@
                 getData.num = 0;
                 return;
               }
-              getData.num++;
-              if (getData.num == getData.allNum) {
-                $("#pagination-demo").twbsPagination(
-                  "changeTotalPages",
-                  --getData.totalPages,
-                  getData.page
-                );
-                getData.num = 0;
-              }
-              console.log(getData.num);
+              $("#pagination-demo").twbsPagination(
+                "changeTotalPages",
+                getData.totalPages,
+                getData.page
+              );
               getData(
                 function(arr) {
-                  pages(arr.totalPage, null, getData.page);
+                  pages(arr.totalPage, null);
                 },
                 { page: getData.page }
               );
