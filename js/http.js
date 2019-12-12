@@ -12,5 +12,12 @@
     newsUrl.delteArticle = baseUrl + '/admin/category/delete'; // 删除文章类别
     newsUrl.queryArticle = baseUrl + '/admin/article/query'; // 文章搜索
     newsUrl.delArticle = baseUrl + '/admin/article/delete'; // 删除文章
+    newsUrl.idArticle = baseUrl + '/admin/article/search'; // 根据id获取文章信息
+    newsUrl.cgArticle = baseUrl + '/admin/article/edit'; // 文章编辑
+    newsUrl.pbArticle = baseUrl + '/admin/article/publish'; // 发布文章
+    newsUrl.commentSearch = baseUrl + '/admin/comment/search'; // 文章评论搜索
+    newsUrl.commentReject = baseUrl + '/admin/comment/reject'; // 评论审核不通过
+    newsUrl.commentPass = baseUrl + '/admin/comment/pass'; // 评论审核通过
+    newsUrl.commentDel = baseUrl + '/admin/comment/delete'; // 删除评论
     w.newsUrl = newsUrl;
 })(window);

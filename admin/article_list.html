@@ -148,6 +148,7 @@
   <script src="./libs/jquery.twbsPagination.js"></script>
   <script>
     $(() => {
+      let listId = localStorage.getItem('list');
       $.get({
         url: newsUrl.allArticle,
         success: function(res) {
@@ -191,12 +192,13 @@
         $("#pagination-demo").twbsPagination({
           totalPages: totalPages,
           visiblePages: 7,
-          startPage: 1,
+          startPage: parseInt(listId),
           first: "首页",
           prev: "上一页",
           next: "下一页",
           last: "尾页",
           onPageClick: function(event, page) {
+            localStorage.setItem('list', page);
             getData.page = page;
             foo && foo(page);
           }
@@ -206,7 +208,7 @@
         pages(arr.totalPage, function(page) {
           getData(null, { page: page });
         });
-      });
+      },{page: listId});
       $("#btnSearch").on("click", function(e) {
         e.preventDefault();
         getData(function(arr) {

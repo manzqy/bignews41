@@ -38,7 +38,7 @@
         </div>
         <ul class="level02">
           <li>
-            <a href="./article_list.html" target="main_frame"
+            <a href="./article_list.html?id=1" target="main_frame"
               ><i class="iconfont icon-previewright"></i
               ><span>文章列表</span></a
             >
@@ -87,6 +87,7 @@
   <script src="../js/http.js"></script>
   <script>
     $(function() {
+      localStorage.setItem('list', '1');
       $.ajax({
         url: newsUrl.userMsg,
         success(res) {
