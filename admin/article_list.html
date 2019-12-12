@@ -148,7 +148,7 @@
   <script src="./libs/jquery.twbsPagination.js"></script>
   <script>
     $(() => {
-      let listId = localStorage.getItem('list');
+      let listId = localStorage.getItem("list");
       $.get({
         url: newsUrl.allArticle,
         success: function(res) {
@@ -161,7 +161,7 @@
         options.type = options.type || $("#selCategory").val();
         options.state = options.state || $("#selStatus").val();
         options.page = options.page || 1;
-        options.perpage = options.perpage || 3;
+        options.perpage = options.perpage || 10;
         $.get({
           url: newsUrl.queryArticle,
           data: {
@@ -198,17 +198,20 @@
           next: "下一页",
           last: "尾页",
           onPageClick: function(event, page) {
-            localStorage.setItem('list', page);
+            localStorage.setItem("list", page);
             getData.page = page;
             foo && foo(page);
           }
         });
       }
-      getData(function(arr) {
-        pages(arr.totalPage, function(page) {
-          getData(null, { page: page });
-        });
-      },{page: listId});
+      getData(
+        function(arr) {
+          pages(arr.totalPage, function(page) {
+            getData(null, { page: page });
+          });
+        },
+        { page: listId }
+      );
       $("#btnSearch").on("click", function(e) {
         e.preventDefault();
         getData(function(arr) {
@@ -277,36 +280,6 @@
           }
         });
       });
-
-      /*    $.get({
-            url: newsUrl.queryArticle,
-            data: {
-                type: type,
-                state: state,
-                page: page,
-                perpage: perpage
-            },
-            success: function(res) {
-                if (res.code == 200) {
-                    let str = template("tempContent", res.data.data);
-                    console.log(str);
-                    $("tbody").html(str);
-
-                    $('#pagination-demo').twbsPagination({
-                        totalPages: res.data.totalPage,
-                        visiblePages: 7,
-                        startPage: 2,
-                        first: '首页',
-                        prev: '上一页',
-                        next: '下一页',
-                        last: '尾页',
-                        onPageClick: function (event, page) {
-                            $('#page-content').text('Page ' + page);
-                        }
-                    });
-                }
-            }
-        }) */
     });
   </script>
 </html>
